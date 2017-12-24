@@ -10,7 +10,7 @@ define nginx::vhost(
   String $log_dir                      = $::nginx::config_log_dir,
   String $vhost_dir                    = $::nginx::vhost_dir,
 ) {
-  $vhost_docroot = "$::nginx::docroot/$name"
+  $vhost_docroot = "${::nginx::docroot}/${name}"
 
   file { "${vhost_dir}/${priority}-${name}.conf":
     ensure  => file,
@@ -22,9 +22,10 @@ define nginx::vhost(
   }
 
   file { "$vhost_docroot":
-    ensure => directory,
-    owner  => $owner,
-    group  => $group,
-    mode   => '0775',
+    ensure  => directory,
+    recurse => true,
+    owner   => $owner,
+    group   => $group,
+    mode    => '0775',
   }
 }
